@@ -1,28 +1,20 @@
-import React, { useState } from 'react';
-import { generateImage } from "../../services/falAI"; // Import the image generation function
+import React, { useState } from "react";
+import { generateImage } from "../../services/falAI"; // Adjust path if needed
 
-/**
- * Generator component for creating images based on user prompts.
- * Utilizes the falAI service to generate images.
- */
 export default function Generator() {
-  const [loading, setLoading] = useState(false); // State to manage loading status
-  const [prompt, setPrompt] = useState(''); // State to store user input prompt
-  const [imageUrl, setImageUrl] = useState(null); // State to store generated image URL
+  const [loading, setLoading] = useState(false);
+  const [prompt, setPrompt] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
 
-  /**
-   * Handles the image generation process.
-   * Sets loading state, clears previous image, and manages API call.
-   */
   const handleGenerate = async () => {
     setLoading(true);
-    setImageUrl(null); // Clear the previous image
+    setImageUrl(null); // Clear previous image
     try {
-      const url = await generateImage(prompt); // Call the falAI function
+      const url = await generateImage(prompt); // Call the generateImage function
       setImageUrl(url); // Set the generated image URL
     } catch (err) {
-      alert('Failed to generate image. Please check your API key or try again.');
-      console.error('Error during image generation:', err);
+      alert("Failed to generate image. Please check your API key or try again.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -44,7 +36,7 @@ export default function Generator() {
         disabled={loading}
         className="bg-blue-500 text-white py-2 px-4 rounded"
       >
-        {loading ? 'Generating...' : 'Generate'}
+        {loading ? "Generating..." : "Generate"}
       </button>
       {imageUrl && (
         <div className="mt-6">

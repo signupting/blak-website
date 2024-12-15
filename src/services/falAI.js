@@ -1,30 +1,27 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Fetch API key and LoRA ID from environment variables
-const apiKey = import.meta.env.VITE_FAL_API_KEY;
-const loraId = import.meta.env.VITE_LORA_ID;
+const API_URL = "https://fal.ai/v1/generate"; // Correct API URL
 
-/**
- * Generates an image using the fal.ai API based on the provided prompt.
- * @param {string} prompt - The text prompt for image generation.
- * @returns {Promise<string>} - A promise that resolves to the URL of the generated image.
- * @throws Will throw an error if the image generation fails.
- */
 export const generateImage = async (prompt) => {
   try {
     const response = await axios.post(
-      'https://api.fal.ai/v1/generate', // Correct API URL
-      { prompt, loraId },
+      API_URL,
+      {
+        prompt, // Pass the user input
+        trigger_word: "blak_photo", // Optional
+        create_masks: true,
+        steps: 1000,
+      },
       {
         headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer cd34dd78-0496-4dd0-b744-152dead21ba1:ec943440bac7280cb5056a8f814b0082`,
+          "Content-Type": "application/json",
         },
       }
     );
-    return response.data.image_url; // Return the generated image URL
+    return response.data.diffusers_lora_file.url;
   } catch (error) {
-    console.error('Error generating image:', error.response?.data || error.message);
-    throw new Error('Failed to generate image. Please check your API key and network connection.');
+    console.error("Error generating image:", error);
+    throw new Error("Failed to generate image. Check your API key or network connection.");
   }
 };
